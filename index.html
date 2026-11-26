@@ -187,6 +187,19 @@
   .meet-card p{font-size:clamp(18px,2.2vw,22px);line-height:1.75;color:#5a3a26}
   #meetWrap{background:#fbf6ee;padding:0 20px 90px}
 
+  /* ===== OUR SONG (official YouTube video) ===== */
+  #oursong{background:#fbf6ee;padding:10px 20px 70px;text-align:center}
+  #oursong .sub{margin-top:6px}
+  .song-frame{position:relative;max-width:720px;margin:26px auto 0;aspect-ratio:16/9;border-radius:18px;overflow:hidden;
+    border:5px solid #fff;outline:1.5px solid var(--gold);outline-offset:6px;box-shadow:0 16px 40px rgba(90,40,20,.25);background:#2a0d12 center/cover no-repeat}
+  .song-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .song-play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:0;cursor:pointer;
+    background:linear-gradient(to top,rgba(60,10,20,.7),rgba(60,10,20,.15));color:#fff;font-family:'Playfair Display',serif;font-size:17px}
+  .song-play i{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#b8862f,#e9c27a 50%,#b8862f);box-shadow:0 8px 24px rgba(0,0,0,.35);animation:pulse 2s ease-in-out infinite}
+  .song-play i svg{width:30px;height:30px;margin-left:5px}
+  .song-credit{font-size:13px;color:#8a6a4a;margin-top:18px;font-family:'Playfair Display',serif}
+
   /* ===== 10. GALLERY ===== */
   #gallery{background:#fbf6ee;padding:10px 16px 90px}
   /* chalti hui photo patti + badi photo */
@@ -558,6 +571,20 @@
   </div>
 </section>
 
+<!-- ============ OUR SONG: official YouTube video (T-Series) ============ -->
+<section id="oursong">
+  <svg class="divider reveal" viewBox="0 0 200 70" aria-hidden="true"><use href="#lotusDiv"/></svg>
+  <h2 class="sec-title reveal" style="margin-top:10px" data-hi="हमारा गाना 🎶">Our Song 🎶</h2>
+  <p class="sub reveal">Din Shagna Da · Jasleen Royal</p>
+  <div class="song-frame reveal" id="songFrame" data-yt="0_jqfezGhjI" style="background-image:url(https://i.ytimg.com/vi/0_jqfezGhjI/hqdefault.jpg)">
+    <button class="song-play" id="songPlay" type="button" aria-label="Play Din Shagna Da">
+      <i><svg viewBox="0 0 24 24" fill="#fff"><path d="M6 4l14 8-14 8z"/></svg></i>
+      <span data-hi="गाना चलाएँ">Play our song</span>
+    </button>
+  </div>
+  <p class="song-credit">Song: “Din Shagna Da” · Film: Phillauri · Official video by T-Series on YouTube</p>
+</section>
+
 <!-- ============ 10. PHOTO GALLERY ============ -->
 <!-- Photos "photos" folder me 1.jpg ... 6.jpg naam se rakhein -->
 <section id="gallery">
@@ -729,6 +756,16 @@
   function playMusic(){if(!hasMusic)return;bgm.volume=.5;bgm.play().then(()=>mBtn.classList.add('on')).catch(()=>{});}
   mBtn.addEventListener('click',()=>{if(bgm.paused){playMusic();}else{bgm.pause();mBtn.classList.remove('on');}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){wasOn=!bgm.paused;bgm.pause();}else if(wasOn){playMusic();}});
+
+  /* ===== Our Song: tap karne par hi YouTube player load hota hai; shehnai ruk jaati hai ===== */
+  const sf=document.getElementById('songFrame');
+  document.getElementById('songPlay').addEventListener('click',()=>{
+    if(!bgm.paused){bgm.pause();mBtn.classList.remove('on');}
+    const f=document.createElement('iframe');
+    f.src=`https://www.youtube-nocookie.com/embed/${sf.dataset.yt}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+    f.title='Din Shagna Da – official video';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;
+    sf.innerHTML='';sf.appendChild(f);
+  });
 
   /* ===== Intro: tasveerein load hone tak loading, phir "Tap to Open" ===== */
   const intro=document.getElementById('intro'),openBtn=document.getElementById('openBtn');let ready=false;
